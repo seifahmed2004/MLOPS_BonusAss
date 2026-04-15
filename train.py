@@ -1,2 +1,1 @@
-raise Exception("Intentional failure for testing artifact")
-
+print("done")
