@@ -58,7 +58,7 @@ jobs:
           echo "Starting expensive training job..."
           python train.py 2>&1 | tee logs/train_output.log
 
-      - name: Create failure log bundle
+      - name: Create error_logs.txt on failure
         if: failure()
         run: |
           {
@@ -67,7 +67,8 @@ jobs:
             echo "Branch: ${{ github.ref_name }}"
             echo "Commit: ${{ github.sha }}"
             echo "Commit message: ${{ github.event.head_commit.message }}"
-            echo "----- train_output.log -----"
+            echo "----------------------------------------"
+            echo "Training output:"
             if [ -f logs/train_output.log ]; then
               cat logs/train_output.log
             else
@@ -75,7 +76,7 @@ jobs:
             fi
           } > error_logs.txt
 
-      - name: Upload error logs artifact
+      - name: Upload error_logs artifact
         if: failure()
         uses: actions/upload-artifact@v4
         with:
